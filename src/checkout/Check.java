@@ -7,11 +7,21 @@ public class Check {
     private List<Product> products = new ArrayList<>();
     private ArrayList<Offer> availableOffers = new ArrayList<>();
     private int points = 0;
+    private int costWithDiscountProduct = 0;
+    private int discount = 2;
 
     public int getTotalCost() {
         int totalCost = 0;
-        for (Product product : this.products) {
-            totalCost += product.price;
+        int totalPrice = 0;
+        if (costWithDiscountProduct > 0) {
+            for (Product product : this.products) {
+                totalPrice += product.price;
+            }
+            totalCost = totalPrice - costWithDiscountProduct / discount;
+        } else {
+            for (Product product : this.products) {
+                totalCost += product.price;
+            }
         }
         return totalCost;
     }
@@ -34,7 +44,17 @@ public class Check {
                 .mapToInt(p -> p.price)
                 .reduce(0, (a, b) -> a + b);
     }
-    void addOffer(Offer offer){
+
+    int getCostWithDiscountOffer(String name) {
+        costWithDiscountProduct = products.stream()
+                .filter(p -> p.name.equals(name))
+                .mapToInt(p -> p.price)
+                .reduce(0, (a, b) -> a + b);
+
+        return costWithDiscountProduct;
+    }
+
+    void addOffer(Offer offer) {
         availableOffers.add(offer);
     }
 }

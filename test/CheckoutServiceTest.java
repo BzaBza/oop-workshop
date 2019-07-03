@@ -203,4 +203,24 @@ public class CheckoutServiceTest {
 
         assertThat(check.getTotalPoints(), is(31));
     }
+    @Test
+    void specialOffer__with__discount() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+        checkoutService.useOffer(new DiscountOffer("Milk"), specificDateAfterToday);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalCost(), is(7));
+    }
+    @Test
+    void specialOffer__with__discount__incorrect__productName() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+        checkoutService.useOffer(new DiscountOffer("Bred"), specificDateAfterToday);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalCost(), is(14));
+    }
 }
