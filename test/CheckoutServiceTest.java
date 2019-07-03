@@ -152,7 +152,7 @@ public class CheckoutServiceTest {
         assertThat(check.getTotalPoints(), is(33));
     }
     @Test
-    void offer__date__isNot_Expired() {
+    void offer__date__isNot__Expired() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
         checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2), specificDateAfterToday);
@@ -163,5 +163,44 @@ public class CheckoutServiceTest {
         Check check = checkoutService.closeCheck();
 
         assertThat(check.getTotalPoints(), is(33));
+    }
+    @Test
+    void specialOffer__with__correct__trademark() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2), specificDateAfterToday);
+        checkoutService.useOffer(new SpecialOffer(2, "KvasTaras"), specificDateAfterToday);
+
+        checkoutService.addProduct(bred_3);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(33));
+    }
+    @Test
+    void specialOffer__with__inCorrect__trademark() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2), specificDateAfterToday);
+        checkoutService.useOffer(new SpecialOffer(2, "Mivina"), specificDateAfterToday);
+
+        checkoutService.addProduct(bred_3);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(31));
+    }
+    @Test
+    void specialOffer__with__inCorrect__totalCost() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2), specificDateAfterToday);
+        checkoutService.useOffer(new SpecialOffer(0, "KvasTaras"), specificDateAfterToday);
+
+        checkoutService.addProduct(bred_3);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(31));
     }
 }
