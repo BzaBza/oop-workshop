@@ -46,20 +46,20 @@ public class Check {
                 .reduce(0, (a, b) -> a + b);
     }
 
-    int getCostWithDiscountOffer(String name) {
+    void getCostWithDiscountOffer(String name) {
         costWithDiscountProduct = products.stream()
                 .filter(p -> p.name.equals(name))
                 .mapToInt(p -> p.price)
                 .reduce(0, (a, b) -> a + b);
 
-        return costWithDiscountProduct;
     }
 
     void addOffer(Offer offer) {
         availableOffers.add(offer);
     }
-    public void getPointsByProductNameOrTrademark(String trademark, String productName){
-        if(specialTrademark == trademark){
+
+    void setPointsByProductNameOrTrademark(String trademark, String productName) {
+        if (specialTrademark == trademark) {
             points += 1;
         }
         for (Product product : products) {

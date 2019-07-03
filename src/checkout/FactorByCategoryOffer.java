@@ -11,10 +11,10 @@ public class FactorByCategoryOffer extends Offer {
 
     @Override
     public void apply(Check check) {
-            int points = check.getCostByCategory(category);
-            check.addPoints(points * (factor - 1));
-            if(points != 0){
-                check.addOffer(this);
-            }
+        int points = check.getCostByCategory(category);
+        check.addPoints(points * (factor - 1));
+        if (points != 0) {
+            check.addOffer(this);
+        }
     }
 }

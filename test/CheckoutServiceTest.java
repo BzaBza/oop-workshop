@@ -112,6 +112,7 @@ public class CheckoutServiceTest {
 
         assertThat(check.getTotalPoints(), is(33));
     }
+
     @Test
     void useOffer__beforeCloseCheck__withTwoProducts() {
         checkoutService.addProduct(milk_7);
@@ -138,6 +139,7 @@ public class CheckoutServiceTest {
 
         assertThat(check.getTotalPoints(), is(17));
     }
+
     @Test
     void offer__date__today() {
         checkoutService.addProduct(milk_7);
@@ -151,6 +153,7 @@ public class CheckoutServiceTest {
 
         assertThat(check.getTotalPoints(), is(33));
     }
+
     @Test
     void offer__date__isNot__Expired() {
         checkoutService.addProduct(milk_7);
@@ -164,6 +167,7 @@ public class CheckoutServiceTest {
 
         assertThat(check.getTotalPoints(), is(33));
     }
+
     @Test
     void specialOffer__with__correct__trademark() {
         checkoutService.addProduct(milk_7);
@@ -176,6 +180,7 @@ public class CheckoutServiceTest {
 
         assertThat(check.getTotalPoints(), is(18));
     }
+
     @Test
     void specialOffer__with__inCorrect__trademark() {
         checkoutService.addProduct(milk_7);
@@ -188,17 +193,19 @@ public class CheckoutServiceTest {
 
         assertThat(check.getTotalPoints(), is(17));
     }
+
     @Test
     void specialOffer__with__productName() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new SpecialOffer("","Milk"), specificDateAfterToday);
+        checkoutService.useOffer(new SpecialOffer("", "Milk"), specificDateAfterToday);
         checkoutService.addProduct(bred_3);
 
         Check check = checkoutService.closeCheck();
 
         assertThat(check.getTotalPoints(), is(19));
     }
+
     @Test
     void discountOffer__with__correct__productName() {
         checkoutService.addProduct(milk_7);
@@ -209,6 +216,7 @@ public class CheckoutServiceTest {
 
         assertThat(check.getTotalCost(), is(7));
     }
+
     @Test
     void discountOffer__incorrect__productName() {
         checkoutService.addProduct(milk_7);

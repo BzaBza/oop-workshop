@@ -9,6 +9,7 @@ public class SpecialOffer extends Offer {
         this.trademark = trademark;
         this.productName = productName;
     }
+
     public SpecialOffer(String trademark) {
         this.trademark = trademark;
         this.productName = null;
@@ -17,6 +18,6 @@ public class SpecialOffer extends Offer {
     @Override
 
     public void apply(Check check) {
-        check.getPointsByProductNameOrTrademark(trademark, productName);
+        check.setPointsByProductNameOrTrademark(trademark, productName);
     }
 }
