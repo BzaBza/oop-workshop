@@ -1,4 +1,5 @@
 package checkout;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class CheckoutService {
@@ -22,12 +23,14 @@ public class CheckoutService {
         for (Offer Offer : Offers) {
             Offer.apply(check);
         }
+        Offers.clear();
         check = null;
         return closedCheck;
     }
 
-    public void useOffer(Offer offer) {
-//        offer.apply(check);
-        Offers.add(offer);
+    public void useOffer(Offer offer, LocalDate date) {
+        if(!offer.isOfferExpired(date)){
+            Offers.add(offer);
+        }
     }
 }
