@@ -8,6 +8,7 @@ public class Check {
     private ArrayList<Offer> availableOffers = new ArrayList<>();
     private int points = 0;
     private int costWithDiscountProduct = 0;
+    public final String specialTrademark = "KvasTaras";
     private int discount = 2;
 
     public int getTotalCost() {
@@ -56,5 +57,15 @@ public class Check {
 
     void addOffer(Offer offer) {
         availableOffers.add(offer);
+    }
+    public void getPointsByProductNameOrTrademark(String trademark, String productName){
+        if(specialTrademark == trademark){
+            points += 1;
+        }
+        for (Product product : products) {
+            if (product.name == productName) {
+                points += 1;
+            }
+        }
     }
 }

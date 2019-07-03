@@ -1,21 +1,22 @@
 package checkout;
 
 public class SpecialOffer extends Offer {
-    public final int totalCost;
     public final int points = 2;
-    public final String specialTrademark = "KvasTaras";
     public final String trademark;
+    public final String productName;
 
-    public SpecialOffer(int totalCost, String trademark) {
-        this.totalCost = totalCost;
+    public SpecialOffer(String trademark, String productName) {
         this.trademark = trademark;
+        this.productName = productName;
+    }
+    public SpecialOffer(String trademark) {
+        this.trademark = trademark;
+        this.productName = null;
     }
 
     @Override
 
     public void apply(Check check) {
-        if (specialTrademark.equals(trademark) && totalCost >= 1){
-            check.addPoints(points);
-        }
+        check.getPointsByProductNameOrTrademark(trademark, productName);
     }
 }
