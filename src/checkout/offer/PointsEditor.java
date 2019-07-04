@@ -1,25 +1,25 @@
-package checkout;
+package checkout.offer;
+
+import checkout.Check;
+import checkout.TrademarkChecker;
 
 import java.time.LocalDate;
 
 public class PointsEditor extends Offer {
     private TrademarkChecker trademarkChecker;
     private String currentProductName = "Milk";
-    private String descriptionProduc;
+    private int additionalPoints = 0;
 
     public PointsEditor(String descriptionProduc,LocalDate expiration) {
         super(expiration);
         trademarkChecker = new TrademarkChecker();
-        this.descriptionProduc = descriptionProduc;
     }
 
     private int setAdditionalPoints(Check check) {
-        int additionalPoints;
         additionalPoints = check.getAllProducts().stream()
                 .filter(p -> p.name == currentProductName || trademarkChecker.checkIsSuitableTrademark(p.name))
                 .mapToInt(p -> p.price)
                 .reduce(0, (a, b) -> a + b);
-
         return additionalPoints;
     }
 
@@ -28,5 +28,15 @@ public class PointsEditor extends Offer {
     public void setOffer(Check check) {
         int additionalPoints = setAdditionalPoints(check);
         check.addPoints(additionalPoints);
+    }
+
+    @Override
+
+    public boolean isValid(Check check){
+//        boolean isValid = false;
+//        if (additionalPoints > 0){
+//            isValid = true;
+//        }
+        return true;
     }
 }

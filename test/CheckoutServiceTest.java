@@ -1,4 +1,8 @@
 import checkout.*;
+import checkout.offer.AnyGoodsOffer;
+import checkout.offer.DiscountOffer;
+import checkout.offer.FactorByCategoryOffer;
+import checkout.offer.PointsEditor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -194,7 +198,7 @@ public class CheckoutServiceTest {
     void discountOffer__with__correct__productName() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new DiscountOffer("Milk", specificDateAfterToday));
+        checkoutService.useOffer(new DiscountOffer("Milk",50, specificDateAfterToday));
 
         Check check = checkoutService.closeCheck();
 
@@ -205,7 +209,7 @@ public class CheckoutServiceTest {
     void discountOffer__incorrect__productName() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new DiscountOffer("Bred", specificDateAfterToday));
+        checkoutService.useOffer(new DiscountOffer("Bred",50, specificDateAfterToday));
 
         Check check = checkoutService.closeCheck();
 

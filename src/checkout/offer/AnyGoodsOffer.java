@@ -1,10 +1,12 @@
-package checkout;
+package checkout.offer;
+
+import checkout.Check;
 
 import java.time.LocalDate;
 
 public class AnyGoodsOffer extends Offer {
-    public final int totalCost;
-    public final int points;
+    private final int totalCost;
+    private final int points;
 
     public AnyGoodsOffer(int totalCost, int points, LocalDate expiration) {
         super(expiration);
@@ -18,5 +20,15 @@ public class AnyGoodsOffer extends Offer {
         if (totalCost <= check.getTotalCost()) {
             check.addPoints(points);
         }
+    }
+
+    @Override
+
+    public boolean isValid(Check check){
+        boolean isValid = false;
+        if (points > 0 && totalCost > 0){
+            isValid = true;
+        }
+        return isValid;
     }
 }
