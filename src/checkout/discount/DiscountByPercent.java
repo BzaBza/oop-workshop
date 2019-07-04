@@ -1,27 +1,11 @@
-package checkout.offer;
+package checkout.discount;
 
 import checkout.Check;
 
-import java.time.LocalDate;
-
-public class DiscountOffer extends Offer {
-    private final String productName;
-    private final int discount;
+public class DiscountByPercent implements Discount{
+    private int discount;
+    private String productName;
     private int totalPriceWithDiscount;
-
-    public DiscountOffer(String productName, int discount, LocalDate expiration) {
-        super(expiration);
-        this.productName = productName;
-        this.discount = discount;
-    }
-
-    @Override
-
-    public void setOffer(Check check) {
-        check.setCostWithDiscount(totalPriceWithDiscount);
-    }
-
-    @Override
 
     public boolean isValid(Check check) {
         boolean isValid = false;
@@ -34,5 +18,9 @@ public class DiscountOffer extends Offer {
             isValid = true;
         }
         return isValid;
+    }
+    @Override
+    public void getDiscount() {
+
     }
 }

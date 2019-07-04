@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 public abstract class Offer {
     private final LocalDate expiration;
+    private boolean condition;
 
     protected Offer(LocalDate expiration){
         this.expiration = expiration;
