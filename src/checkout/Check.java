@@ -8,7 +8,7 @@ public class Check {
     private ArrayList<Offer> availableOffers = new ArrayList<>();
     private int points = 0;
     private int costWithDiscountProduct = 0;
-    private int discount = 2;
+    private int discount = 50/100;
 
     public int getTotalCost() {
         int totalCost = 0;
@@ -17,7 +17,7 @@ public class Check {
             for (Product product : this.products) {
                 totalPrice += product.price;
             }
-            totalCost = totalPrice - costWithDiscountProduct / discount;
+            totalCost = totalPrice - costWithDiscountProduct * discount;
         } else {
             for (Product product : this.products) {
                 totalCost += product.price;
@@ -32,6 +32,10 @@ public class Check {
 
     public int getTotalPoints() {
         return getTotalCost() + points;
+    }
+
+    public List<Product> getAllProducts() {
+        return products;
     }
 
     void addPoints(int points) {

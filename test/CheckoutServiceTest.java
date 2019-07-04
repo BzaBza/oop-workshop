@@ -173,10 +173,21 @@ public class CheckoutServiceTest {
         checkoutService.addProduct(milk_7);
 
         checkoutService.addProduct(bred_3);
-
+        checkoutService.useOffer(new PointsEditor("Milk", specificDateAfterToday));
         Check check = checkoutService.closeCheck();
 
-        assertThat(check.getTotalPoints(), is(33));
+        assertThat(check.getTotalPoints(), is(31));
+    }
+    @Test
+    void addPoints__by__trademark() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+
+        checkoutService.addProduct(bred_3);
+        checkoutService.useOffer(new PointsEditor("KvasTaras", specificDateAfterToday));
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(31));
     }
 
     @Test
