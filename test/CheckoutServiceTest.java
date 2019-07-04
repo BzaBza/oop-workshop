@@ -72,7 +72,7 @@ public class CheckoutServiceTest {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(bred_3);
 
-        checkoutService.useOffer(new AnyGoodsOffer(6, 2), today);
+        checkoutService.useOffer(new AnyGoodsOffer(6, 2, today));
         Check check = checkoutService.closeCheck();
 
         assertThat(check.getTotalPoints(), is(12));
@@ -82,7 +82,7 @@ public class CheckoutServiceTest {
     void useOffer__whenCostLessThanRequired__doNothing() {
         checkoutService.addProduct(bred_3);
 
-        checkoutService.useOffer(new AnyGoodsOffer(6, 2), today);
+        checkoutService.useOffer(new AnyGoodsOffer(6, 2, today));
         Check check = checkoutService.closeCheck();
 
         assertThat(check.getTotalPoints(), is(3));
@@ -94,7 +94,7 @@ public class CheckoutServiceTest {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(bred_3);
 
-        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2), today);
+        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, today));
         Check check = checkoutService.closeCheck();
 
         assertThat(check.getTotalPoints(), is(31));
@@ -102,8 +102,8 @@ public class CheckoutServiceTest {
 
     @Test
     void useOffer__beforeCloseCheck() {
-        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2), today);
-        checkoutService.useOffer(new AnyGoodsOffer(9, 2), today);
+        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, today));
+        checkoutService.useOffer(new AnyGoodsOffer(9, 2, today));
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(bred_3);
@@ -117,8 +117,8 @@ public class CheckoutServiceTest {
     void useOffer__beforeCloseCheck__withTwoProducts() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2), today);
-        checkoutService.useOffer(new AnyGoodsOffer(9, 2), today);
+        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, today));
+        checkoutService.useOffer(new AnyGoodsOffer(9, 2, today));
         checkoutService.addProduct(bred_3);
 
         Check check = checkoutService.closeCheck();
@@ -127,11 +127,11 @@ public class CheckoutServiceTest {
     }
 
     @Test
-    void offerExpiration() {
+    void offerExpired() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2), specificDateBeforeToday);
-        checkoutService.useOffer(new AnyGoodsOffer(9, 2), specificDateBeforeToday);
+        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, specificDateBeforeToday));
+        checkoutService.useOffer(new AnyGoodsOffer(9, 2, specificDateBeforeToday));
 
         checkoutService.addProduct(bred_3);
 
@@ -144,8 +144,8 @@ public class CheckoutServiceTest {
     void offer__date__today() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2), today);
-        checkoutService.useOffer(new AnyGoodsOffer(9, 2), today);
+        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, today));
+        checkoutService.useOffer(new AnyGoodsOffer(9, 2, today));
 
         checkoutService.addProduct(bred_3);
 
@@ -158,8 +158,19 @@ public class CheckoutServiceTest {
     void offer__date__isNot__Expired() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2), specificDateAfterToday);
-        checkoutService.useOffer(new AnyGoodsOffer(9, 2), specificDateAfterToday);
+        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, specificDateAfterToday));
+        checkoutService.useOffer(new AnyGoodsOffer(9, 2, specificDateAfterToday));
+
+        checkoutService.addProduct(bred_3);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(33));
+    }
+    @Test
+    void addPoints__by__ProductName() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
 
         checkoutService.addProduct(bred_3);
 
@@ -169,48 +180,10 @@ public class CheckoutServiceTest {
     }
 
     @Test
-    void specialOffer__with__correct__trademark() {
-        checkoutService.addProduct(milk_7);
-        checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new SpecialOffer("KvasTaras"), specificDateAfterToday);
-
-        checkoutService.addProduct(bred_3);
-
-        Check check = checkoutService.closeCheck();
-
-        assertThat(check.getTotalPoints(), is(18));
-    }
-
-    @Test
-    void specialOffer__with__inCorrect__trademark() {
-        checkoutService.addProduct(milk_7);
-        checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new SpecialOffer("Mivina"), specificDateAfterToday);
-
-        checkoutService.addProduct(bred_3);
-
-        Check check = checkoutService.closeCheck();
-
-        assertThat(check.getTotalPoints(), is(17));
-    }
-
-    @Test
-    void specialOffer__with__productName() {
-        checkoutService.addProduct(milk_7);
-        checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new SpecialOffer("", "Milk"), specificDateAfterToday);
-        checkoutService.addProduct(bred_3);
-
-        Check check = checkoutService.closeCheck();
-
-        assertThat(check.getTotalPoints(), is(19));
-    }
-
-    @Test
     void discountOffer__with__correct__productName() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new DiscountOffer("Milk"), specificDateAfterToday);
+        checkoutService.useOffer(new DiscountOffer("Milk", specificDateAfterToday));
 
         Check check = checkoutService.closeCheck();
 
@@ -221,7 +194,7 @@ public class CheckoutServiceTest {
     void discountOffer__incorrect__productName() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(milk_7);
-        checkoutService.useOffer(new DiscountOffer("Bred"), specificDateAfterToday);
+        checkoutService.useOffer(new DiscountOffer("Bred", specificDateAfterToday));
 
         Check check = checkoutService.closeCheck();
 
