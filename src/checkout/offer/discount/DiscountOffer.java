@@ -19,11 +19,10 @@ public class DiscountOffer extends Offer {
 
     @Override
     protected void setOffer(Check check) {
-        for (Product product : check.getAllProducts()) {
-            if (condition.isSuitable(product)) {
-                int price = product.getPrice();
-                product.setPrice((int)(price * discount));
-            }
+        Product product = condition.isSuitable(check);
+        if(product != null){
+            int price = product.getPrice();
+            product.setPrice((int) (price * discount));
         }
     }
 

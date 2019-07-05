@@ -1,8 +1,10 @@
 package checkout.offer.condition;
 
+
+import checkout.Check;
 import checkout.Product;
 
 public interface Condition {
-     boolean isSuitable(Product product);
+     Product isSuitable(Check check);
 }
 

@@ -1,5 +1,6 @@
 package checkout.offer.condition;
 
+import checkout.Check;
 import checkout.Product;
 
 public class TrademarkCondition implements Condition {
@@ -11,7 +12,14 @@ public class TrademarkCondition implements Condition {
     }
 
     @Override
-    public boolean isSuitable(Product product) {
-        return product.getTrademark().equals(trademark);
+
+    public Product isSuitable(Check check) {
+        Product isCheckHasThisProduct = null;
+        for(int i = 0; i < check.getAllProducts().size(); i++){
+            if (check.getAllProducts().get(i).getTrademark().equals(trademark)){
+                isCheckHasThisProduct = check.getAllProducts().get(i);
+            }
+        }
+        return  isCheckHasThisProduct;
     }
 }

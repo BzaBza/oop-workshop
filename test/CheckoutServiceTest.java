@@ -1,6 +1,8 @@
 import checkout.*;
 import checkout.offer.Offer;
+import checkout.offer.condition.CategoryCondition;
 import checkout.offer.condition.NameCondition;
+import checkout.offer.condition.TotalCostCondition;
 import checkout.offer.condition.TrademarkCondition;
 import checkout.offer.discount.DiscountOffer;
 import org.junit.jupiter.api.BeforeEach;
@@ -218,7 +220,7 @@ public class CheckoutServiceTest {
 
 
     @Test
-    void discountOffer__incorrect__productName() {
+    void discountOffer__correct__productName() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(bred_3);
 
@@ -228,6 +230,61 @@ public class CheckoutServiceTest {
 
         Check check = checkoutService.closeCheck();
 
-        assertThat(check.getTotalCost(), is(7));
+        assertThat(check.getTotalCost(), is(6));
+    }
+    @Test
+    void discountOffer__incorrect__productName() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(bred_3);
+
+        Offer z = new DiscountOffer(specificDateAfterToday, new NameCondition("Meat"), 50);
+
+        checkoutService.useOffer(z);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalCost(), is(10));
+    }
+
+    @Test
+    void discountOffer__correct__category() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(bred_3);
+
+        Offer z = new DiscountOffer(specificDateAfterToday, new CategoryCondition(Category.MILK), 50);
+
+        checkoutService.useOffer(z);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalCost(), is(6));
+    }
+
+    @Test
+    void discountOffer__correct__totalCost() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(bred_3);
+
+        Offer z = new DiscountOffer(specificDateAfterToday, new TotalCostCondition(5, "Milk"), 50);
+
+        checkoutService.useOffer(z);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalCost(), is(6));
+    }
+
+    @Test
+    void discountOffer__correct__trademark() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(bred_3);
+
+        Offer z = new DiscountOffer(specificDateAfterToday, new TrademarkCondition("borjomi"), 50);
+
+        checkoutService.useOffer(z);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalCost(), is(6));
     }
 }
