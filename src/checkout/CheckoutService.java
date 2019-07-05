@@ -2,11 +2,12 @@ package checkout;
 
 import checkout.offer.Offer;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class CheckoutService {
 
-    private ArrayList<Offer> Offers = new ArrayList<>();
+    private ArrayList<Offer> offers = new ArrayList<>();
     private Check check;
 
     public void openCheck() {
@@ -22,15 +23,15 @@ public class CheckoutService {
 
     public Check closeCheck() {
         Check closedCheck = check;
-        for (Offer Offer : Offers) {
-            Offer.apply(check);
+        for (Offer offer : offers) {
+            offer.apply(check);
         }
-        Offers.clear();
+        offers.clear();
         check = null;
         return closedCheck;
     }
 
     public void useOffer(Offer offer) {
-        Offers.add(offer);
+        offers.add(offer);
     }
 }

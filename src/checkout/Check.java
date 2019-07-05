@@ -13,12 +13,10 @@ public class Check {
 
     public int getTotalCost() {
         int totalCost = 0;
-        if (totalCostWithDiscount > 0) {
-            totalCost = totalCostWithDiscount;
-        } else {
-            for (Product product : this.products) {
-                totalCost += product.price;
-            }
+
+        for (Product product : this.products) {
+            System.out.println(product.getPrice() + " product name");
+            totalCost += product.getPrice();
         }
         return totalCost;
     }
@@ -41,8 +39,8 @@ public class Check {
 
     public int getCostByCategory(Category category) {
         return products.stream()
-                .filter(p -> p.category == category)
-                .mapToInt(p -> p.price)
+                .filter(p -> p.getCategory() == category)
+                .mapToInt(p -> p.getPrice())
                 .reduce(0, (a, b) -> a + b);
     }
 
