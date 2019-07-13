@@ -9,14 +9,25 @@ public class Check {
     private List<Product> products = new ArrayList<>();
     private ArrayList<Offer> availableOffers = new ArrayList<>();
     private int points = 0;
-    private int totalCostWithDiscount;
+    private int presentPrice = 0;
+    private double discount;
+    private Product presentProduct;
 
     public int getTotalCost() {
         int totalCost = 0;
 
-        for (Product product : this.products) {
-            System.out.println(product.getPrice() + " product name");
-            totalCost += product.getPrice();
+        if (this.discount > 0) {
+            for (Product product : this.products) {
+                totalCost += product.getPrice();
+            }
+            totalCost = (int) (totalCost - discount);
+            if (presentPrice > 0){
+                totalCost = totalCost - presentProduct.getPrice() + presentPrice;
+            }
+        } else {
+            for (Product product : this.products) {
+                totalCost += product.getPrice();
+            }
         }
         return totalCost;
     }
@@ -29,27 +40,28 @@ public class Check {
         return getTotalCost() + points;
     }
 
+    public void addPresent(Product product, int presentPrice) {
+        products.add(product);
+        this.presentProduct = product;
+        this.presentPrice = presentPrice;
+    }
+
     public List<Product> getAllProducts() {
         return products;
     }
 
-    public void addPoints(int points) {
-        this.points += points;
+    public void useDiscount(double discount, Product product) {
+        int productsCount;
+        productsCount = (int) products.stream().filter(p -> p.getName() == product.getName()).count();
+        this.discount = (product.getPrice() - product.getPrice() * discount) * productsCount;
     }
 
-    public int getCostByCategory(Category category) {
-        return products.stream()
-                .filter(p -> p.getCategory() == category)
-                .mapToInt(p -> p.getPrice())
-                .reduce(0, (a, b) -> a + b);
-    }
-
-    public void setCostWithDiscount(int totalCostWithDiscount) {
-        this.totalCostWithDiscount = totalCostWithDiscount;
-
-    }
-
-    public void addOffer(Offer offer) {
-        availableOffers.add(offer);
+    public void addPoints(int points, Product product) {
+        products.forEach(p -> {
+                    if (p.getName().equals(product.getName())) {
+                        this.points += points;
+                    }
+                }
+        );
     }
 }

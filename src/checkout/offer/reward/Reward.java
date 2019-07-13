@@ -1,7 +1,8 @@
 package checkout.offer.reward;
 
 import checkout.Check;
+import checkout.Product;
 
 public interface Reward {
-    int getReward(Check check);
+    void getReward(Check check, Product product);
 }

@@ -20,14 +20,19 @@ public class DiscountOffer extends Offer {
     @Override
     protected void setOffer(Check check) {
         Product product = condition.isSuitable(check);
-        if(product != null){
-            int price = product.getPrice();
-            product.setPrice((int) (price * discount));
+        int productsCount;
+        if (product != null) {
+            check.useDiscount(discount, product);
+            productsCount = (int) check.getAllProducts().stream().filter(p -> p.getName() == product.getName()).count();
+            if (productsCount == 2){
+                check.addPresent(product, 1);
+            }
         }
+        System.out.println(check.getAllProducts());
     }
 
     @Override
     public boolean isValid(Check check) {
-        return true;
+        return check.getAllProducts().size() > 0 && check.getTotalCost() > 0;
     }
 }

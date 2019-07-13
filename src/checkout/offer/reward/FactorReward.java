@@ -1,10 +1,12 @@
 package checkout.offer.reward;
 
 import checkout.Check;
+import checkout.Product;
 
 public class FactorReward implements Reward {
+
     @Override
-    public int getReward(Check check) {
-        return 0;
+    public void getReward (Check check, Product product) {
+        check.addPoints(product.getPrice() * 2, product);
     }
 }

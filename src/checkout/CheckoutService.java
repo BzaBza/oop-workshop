@@ -2,7 +2,6 @@ package checkout;
 
 import checkout.offer.Offer;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class CheckoutService {

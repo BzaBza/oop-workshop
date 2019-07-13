@@ -5,6 +5,7 @@ import checkout.offer.condition.NameCondition;
 import checkout.offer.condition.TotalCostCondition;
 import checkout.offer.condition.TrademarkCondition;
 import checkout.offer.discount.DiscountOffer;
+import checkout.offer.reward.RewardOffer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -72,161 +73,97 @@ public class CheckoutServiceTest {
 
         assertThat(check.getTotalPoints(), is(10));
     }
-//
-//    @Test
-//    void useOffer__addOfferPoints() {
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(bred_3);
-//
-//        checkoutService.useOffer(new AnyGoodsOffer(6, 2, today));
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalPoints(), is(12));
-//    }
-//
-//    @Test
-//    void useOffer__whenCostLessThanRequired__doNothing() {
-//        checkoutService.addProduct(bred_3);
-//
-//        checkoutService.useOffer(new AnyGoodsOffer(6, 2, today));
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalPoints(), is(3));
-//    }
-//
-//    @Test
-//    void useOffer__factorByCategory() {
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(bred_3);
-//
-//        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, today));
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalPoints(), is(31));
-//    }
-//
-//    @Test
-//    void useOffer__beforeCloseCheck() {
-//        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, today));
-//        checkoutService.useOffer(new AnyGoodsOffer(9, 2, today));
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(bred_3);
-//
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalPoints(), is(33));
-//    }
-//
-//    @Test
-//    void useOffer__beforeCloseCheck__withTwoProducts() {
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, today));
-//        checkoutService.useOffer(new AnyGoodsOffer(9, 2, today));
-//        checkoutService.addProduct(bred_3);
-//
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalPoints(), is(33));
-//    }
-//
-//    @Test
-//    void offerExpired() {
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, specificDateBeforeToday));
-//        checkoutService.useOffer(new AnyGoodsOffer(9, 2, specificDateBeforeToday));
-//
-//        checkoutService.addProduct(bred_3);
-//
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalPoints(), is(17));
-//    }
-//
-//    @Test
-//    void offer__date__today() {
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, today));
-//        checkoutService.useOffer(new AnyGoodsOffer(9, 2, today));
-//
-//        checkoutService.addProduct(bred_3);
-//
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalPoints(), is(33));
-//    }
-//
-//    @Test
-//    void offer__date__isNot__Expired() {
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2, specificDateAfterToday));
-//        checkoutService.useOffer(new AnyGoodsOffer(9, 2, specificDateAfterToday));
-//
-//        checkoutService.addProduct(bred_3);
-//
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalPoints(), is(33));
-//    }
-//    @Test
-//    void addPoints__by__ProductName() {
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(milk_7);
-//
-//        checkoutService.addProduct(bred_3);
-//        checkoutService.useOffer(new PointsEditor("Milk", specificDateAfterToday));
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalPoints(), is(31));
-//    }
-//    @Test
-//    void addPoints__by__trademark() {
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(milk_7);
-//
-//        checkoutService.addProduct(bred_3);
-//        checkoutService.useOffer(new PointsEditor("KvasTaras", specificDateAfterToday));
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalPoints(), is(31));
-//    }
-//
-//    @Test
-//    void discountOffer__with__correct__productName() {
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.useOffer(new DiscountOffer("Milk",50, specificDateAfterToday));
-//
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalCost(), is(7));
-//    }
-//
-//    @Test
-//    void discountOffer__incorrect__productName() {
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.addProduct(milk_7);
-//        checkoutService.useOffer(new DiscountOffer("Bred",50, specificDateAfterToday));
-//
-//        Check check = checkoutService.closeCheck();
-//
-//        assertThat(check.getTotalCost(), is(14));
-//    }
 
+    @Test
+    void useOffer__beforeCloseCheck__withTwoProducts() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+        Offer offer = new RewardOffer(today, new NameCondition("Milk"));
+        checkoutService.useOffer(offer);
+        checkoutService.addProduct(bred_3);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(31));
+    }
+
+    @Test
+    void expiration__ofOffer__isExpired() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+
+        Offer offer = new RewardOffer(specificDateBeforeToday, new NameCondition("Milk"));
+        checkoutService.useOffer(offer);
+
+        checkoutService.addProduct(bred_3);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(17));
+    }
+
+    @Test
+    void offer__date__today() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+        Offer offer = new RewardOffer(today, new NameCondition("Milk"));
+        checkoutService.useOffer(offer);
+
+        checkoutService.addProduct(bred_3);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(31));
+    }
+
+    @Test
+    void check__expirationOfferData__notExpired() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+        Offer offer = new RewardOffer(specificDateAfterToday, new NameCondition("Milk"));
+        checkoutService.useOffer(offer);
+
+        checkoutService.addProduct(bred_3);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(31));
+    }
+
+    @Test
+    void addPoints__byProductName__getMorePointsByMilk() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+
+        checkoutService.addProduct(bred_3);
+        Offer offer = new RewardOffer(specificDateAfterToday, new NameCondition("Milk"));
+        checkoutService.useOffer(offer);
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(31));
+    }
+    @Test
+    void addPoints__byTrademark__getMorePointsByMilk() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+
+        checkoutService.addProduct(bred_3);
+        Offer offer = new RewardOffer(specificDateAfterToday, new TrademarkCondition("borjomi"));
+        checkoutService.useOffer(offer);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(31));
+    }
 
     @Test
     void discountOffer__correct__productName() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(bred_3);
 
-        Offer z = new DiscountOffer(specificDateAfterToday, new NameCondition("Milk"), 50);
+        Offer offer = new DiscountOffer(specificDateAfterToday, new NameCondition("Milk"), 50);
 
-        checkoutService.useOffer(z);
+        checkoutService.useOffer(offer);
 
         Check check = checkoutService.closeCheck();
 
@@ -237,9 +174,9 @@ public class CheckoutServiceTest {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(bred_3);
 
-        Offer z = new DiscountOffer(specificDateAfterToday, new NameCondition("Meat"), 50);
+        Offer offer = new DiscountOffer(specificDateAfterToday, new NameCondition("Meat"), 50);
 
-        checkoutService.useOffer(z);
+        checkoutService.useOffer(offer);
 
         Check check = checkoutService.closeCheck();
 
@@ -265,9 +202,9 @@ public class CheckoutServiceTest {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(bred_3);
 
-        Offer z = new DiscountOffer(specificDateAfterToday, new TotalCostCondition(5, "Milk"), 50);
+        Offer offer = new DiscountOffer(specificDateAfterToday, new TotalCostCondition(5, "Milk"), 50);
 
-        checkoutService.useOffer(z);
+        checkoutService.useOffer(offer);
 
         Check check = checkoutService.closeCheck();
 
@@ -275,16 +212,56 @@ public class CheckoutServiceTest {
     }
 
     @Test
-    void discountOffer__correct__trademark() {
+    void discountOffer__correctTrademark__decreesTotalCost() {
         checkoutService.addProduct(milk_7);
         checkoutService.addProduct(bred_3);
 
-        Offer z = new DiscountOffer(specificDateAfterToday, new TrademarkCondition("borjomi"), 50);
+        Offer offer = new DiscountOffer(specificDateAfterToday, new TrademarkCondition("borjomi"), 50);
 
-        checkoutService.useOffer(z);
+        checkoutService.useOffer(offer);
 
         Check check = checkoutService.closeCheck();
 
         assertThat(check.getTotalCost(), is(6));
+    }
+    @Test
+    void rewardOffer__correctTrademark__FlatReward() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(bred_3);
+
+        Offer offer = new RewardOffer(specificDateAfterToday, new TrademarkCondition("borjomi"));
+
+        checkoutService.useOffer(offer);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(17));
+    }
+    @Test
+    void rewardOffer__correctTrademark__factorReward() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(bred_3);
+
+        Offer offer = new RewardOffer(specificDateAfterToday, new TotalCostCondition(6, "Milk"));
+
+        checkoutService.useOffer(offer);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalPoints(), is(24));
+    }
+    @Test
+    void discountOffer__correctTrademark__getThreeMilks() {
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(milk_7);
+        checkoutService.addProduct(bred_3);
+
+        Offer offer = new DiscountOffer(specificDateAfterToday, new TrademarkCondition("borjomi"), 50);
+
+        checkoutService.useOffer(offer);
+
+        Check check = checkoutService.closeCheck();
+
+        assertThat(check.getTotalCost(), is(11));
     }
 }
